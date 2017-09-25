@@ -1,18 +1,14 @@
 package Vector;
 
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static List<Integer> intVector = new ArrayList<Integer>(60);
-    public static boolean active=true;
 
     public static void main(String[] args) throws InterruptedException {
-        Producer p = new Producer();
-        Consumer c = new Consumer();
+        Product product = new Product();
+        Producer p = new Producer(product);
+        Consumer c = new Consumer(product);
         p.start();
         c.start();
 
@@ -24,15 +20,13 @@ public class Main {
             String input = keyboard.nextLine();
             if(input != null) {
 
-                if(active){
+                if(product.active){
                     System.out.println("off");
-                    active = false;
+                    product.active = false;
                     }else{
                     System.out.println("on");
-                    active = true;
-                    synchronized(intVector){
-                        intVector.notifyAll();
-                    }
+                    product.active = true;
+                    product.notifyAll();
 
                    }
 
